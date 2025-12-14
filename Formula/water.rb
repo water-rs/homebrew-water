@@ -25,6 +25,10 @@ class Water < Formula
   end
 
   def install
-    bin.install Dir["*/water"]
+    if File.exist?("water")
+      bin.install "water"
+    else
+      bin.install Dir["*/water"]
+    end
   end
 end
