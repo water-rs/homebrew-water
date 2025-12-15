@@ -1,26 +1,26 @@
 class Water < Formula
   desc "Cross-platform tooling for WaterUI apps"
   homepage "https://github.com/water-rs/waterui"
-  version "0.1.2"
+  version "0.1.3"
   license any_of: ["Apache-2.0", "MIT"]
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/water-rs/waterui/releases/download/cli-v0.1.2/waterui-cli-aarch64-apple-darwin.tar.xz"
-      sha256 "3adfac295d9f9efd246030236f092d4f5aabdeaf9739b765bb25306e46720682"
+      url "https://github.com/water-rs/waterui/releases/download/cli-v0.1.3/waterui-cli-aarch64-apple-darwin.tar.xz"
+      sha256 "c04d75021cdbd9b19102431dd3f8e47a668505e7a2700fd0416a722face93487"
     else
-      url "https://github.com/water-rs/waterui/releases/download/cli-v0.1.2/waterui-cli-x86_64-apple-darwin.tar.xz"
-      sha256 "c7b0347196c5d756e8d2860e1ac959efee977e895f213a594af952c6b3091bb9"
+      url "https://github.com/water-rs/waterui/releases/download/cli-v0.1.3/waterui-cli-x86_64-apple-darwin.tar.xz"
+      sha256 "0cd23b8335371ddb8169d1261a8d1c543e95fad188bde38e0177fc6e25dfe116"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/water-rs/waterui/releases/download/cli-v0.1.2/waterui-cli-aarch64-unknown-linux-gnu.tar.xz"
-      sha256 "53c90ca619976a36e55f2430603c9b40443f94d02f3e4c44bbcbb5fc0650e320"
+      url "https://github.com/water-rs/waterui/releases/download/cli-v0.1.3/waterui-cli-aarch64-unknown-linux-gnu.tar.xz"
+      sha256 "2083dc755f51d70ae4bc5625d05a0d355f5967e98cab28d0bec829db1752819f"
     else
-      url "https://github.com/water-rs/waterui/releases/download/cli-v0.1.2/waterui-cli-x86_64-unknown-linux-gnu.tar.xz"
-      sha256 "ad0cc870c778a3418421083eaa2a0ef930cda81aae9ec7a3691a7b2498e83155"
+      url "https://github.com/water-rs/waterui/releases/download/cli-v0.1.3/waterui-cli-x86_64-unknown-linux-gnu.tar.xz"
+      sha256 "8001e2b3df65dfec7ab0f5bd8171d1e9b982e3eade71590b54d931bf93b11969"
     end
   end
 
