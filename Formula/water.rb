@@ -1,34 +1,71 @@
 class Water < Formula
-  desc "Cross-platform tooling for WaterUI apps"
-  homepage "https://github.com/water-rs/waterui"
-  version "0.1.3"
-  license any_of: ["Apache-2.0", "MIT"]
-
-  on_macos do
+  desc "Cross-platform tooling for WaterUI applications"
+  homepage "https://waterui.dev"
+  version "0.2.1"
+  if OS.mac?
     if Hardware::CPU.arm?
-      url "https://github.com/water-rs/waterui/releases/download/cli-v0.1.3/waterui-cli-aarch64-apple-darwin.tar.xz"
-      sha256 "c04d75021cdbd9b19102431dd3f8e47a668505e7a2700fd0416a722face93487"
-    else
-      url "https://github.com/water-rs/waterui/releases/download/cli-v0.1.3/waterui-cli-x86_64-apple-darwin.tar.xz"
-      sha256 "0cd23b8335371ddb8169d1261a8d1c543e95fad188bde38e0177fc6e25dfe116"
+      url "https://github.com/water-rs/waterui/releases/download/waterui-cli-v0.2.1/waterui-cli-aarch64-apple-darwin.tar.xz"
+    end
+    if Hardware::CPU.intel?
+      url "https://github.com/water-rs/waterui/releases/download/waterui-cli-v0.2.1/waterui-cli-x86_64-apple-darwin.tar.xz"
     end
   end
-
-  on_linux do
+  if OS.linux?
     if Hardware::CPU.arm?
-      url "https://github.com/water-rs/waterui/releases/download/cli-v0.1.3/waterui-cli-aarch64-unknown-linux-gnu.tar.xz"
-      sha256 "2083dc755f51d70ae4bc5625d05a0d355f5967e98cab28d0bec829db1752819f"
-    else
-      url "https://github.com/water-rs/waterui/releases/download/cli-v0.1.3/waterui-cli-x86_64-unknown-linux-gnu.tar.xz"
-      sha256 "8001e2b3df65dfec7ab0f5bd8171d1e9b982e3eade71590b54d931bf93b11969"
+      url "https://github.com/water-rs/waterui/releases/download/waterui-cli-v0.2.1/waterui-cli-aarch64-unknown-linux-gnu.tar.xz"
+    end
+    if Hardware::CPU.intel?
+      url "https://github.com/water-rs/waterui/releases/download/waterui-cli-v0.2.1/waterui-cli-x86_64-unknown-linux-gnu.tar.xz"
+    end
+  end
+  license any_of: ["Apache-2.0", "MIT"]
+
+  BINARY_ALIASES = {
+    "aarch64-apple-darwin": {},
+    "aarch64-pc-windows-gnu": {},
+    "aarch64-unknown-linux-gnu": {},
+    "x86_64-apple-darwin": {},
+    "x86_64-pc-windows-gnu": {},
+    "x86_64-unknown-linux-gnu": {}
+  }
+
+  def target_triple
+    cpu = Hardware::CPU.arm? ? "aarch64" : "x86_64"
+    os = OS.mac? ? "apple-darwin" : "unknown-linux-gnu"
+
+    "#{cpu}-#{os}"
+  end
+
+  def install_binary_aliases!
+    BINARY_ALIASES[target_triple.to_sym].each do |source, dests|
+      dests.each do |dest|
+        bin.install_symlink bin/source.to_s => dest
+      end
     end
   end
 
   def install
-    if File.exist?("water")
+    if OS.mac? && Hardware::CPU.arm?
       bin.install "water"
-    else
-      bin.install Dir["*/water"]
     end
+    if OS.mac? && Hardware::CPU.intel?
+      bin.install "water"
+    end
+    if OS.linux? && Hardware::CPU.arm?
+      bin.install "water"
+    end
+    if OS.linux? && Hardware::CPU.intel?
+      bin.install "water"
+    end
+
+    install_binary_aliases!
+
+    # Homebrew will automatically install these, so we don't need to do that
+    doc_files = Dir["README.*", "readme.*", "LICENSE", "LICENSE.*", "CHANGELOG.*"]
+    leftover_contents = Dir["*"] - doc_files
+
+    # Install any leftover files in pkgshare; these are probably config or
+    # sample files.
+    pkgshare.install(*leftover_contents) unless leftover_contents.empty?
   end
 end
