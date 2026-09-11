@@ -1,0 +1,56 @@
+name: Publish formula update
+
+# `dev` accepts changes only through a pull request, and the release job in
+# water-rs/waterui cannot open one: its token may write contents here but not
+# pull requests, and the GitHub API answers `Resource not accessible by
+# personal access token`. So that job pushes a `water-<version>` branch
+# carrying the formula `dist` generated, and this workflow — running under
+# this repository's own `GITHUB_TOKEN`, which needs no cross-repository
+# credential — turns the branch into a merged pull request.
+#
+# It merges its own pull request because the formula is generated: there is
+# nothing in it for a person to read. The rule that asks for a pull request is
+# still honoured, and the squash commit GitHub writes onto `dev` carries the
+# verified signature `dev` also requires.
+
+on:
+  push:
+    branches: ["water-*"]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: publish-formula-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Merge the formula update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Open and merge the pull request
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          version="${BRANCH#water-}"
+
+          # A re-run of the release pushes the same branch again, so the pull
+          # request may already be open from the first push.
+          url="$(gh pr list --head "$BRANCH" --base dev --state open --json url --jq '.[0].url // ""')"
+          if [[ -z "$url" ]]; then
+            url="$(gh pr create \
+              --base dev \
+              --head "$BRANCH" \
+              --title "water ${version}" \
+              --body "The formula \`dist\` generated for \`waterui-cli-v${version}\`.")"
+          fi
+
+          echo "Merging ${url}"
+          gh pr merge "$url" --squash --delete-branch
