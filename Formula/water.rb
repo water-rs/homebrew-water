@@ -1,21 +1,21 @@
 class Water < Formula
   desc "Cross-platform tooling for WaterUI applications"
   homepage "https://github.com/water-rs/cli"
-  version "0.3.1"
+  version "0.3.2"
   if OS.mac?
     if Hardware::CPU.arm?
-      url "https://github.com/water-rs/cli/releases/download/v0.3.1/waterui-cli-aarch64-apple-darwin.tar.xz"
+      url "https://github.com/water-rs/cli/releases/download/v0.3.2/waterui-cli-aarch64-apple-darwin.tar.xz"
     end
     if Hardware::CPU.intel?
-      url "https://github.com/water-rs/cli/releases/download/v0.3.1/waterui-cli-x86_64-apple-darwin.tar.xz"
+      url "https://github.com/water-rs/cli/releases/download/v0.3.2/waterui-cli-x86_64-apple-darwin.tar.xz"
     end
   end
   if OS.linux?
     if Hardware::CPU.arm?
-      url "https://github.com/water-rs/cli/releases/download/v0.3.1/waterui-cli-aarch64-unknown-linux-gnu.tar.xz"
+      url "https://github.com/water-rs/cli/releases/download/v0.3.2/waterui-cli-aarch64-unknown-linux-gnu.tar.xz"
     end
     if Hardware::CPU.intel?
-      url "https://github.com/water-rs/cli/releases/download/v0.3.1/waterui-cli-x86_64-unknown-linux-gnu.tar.xz"
+      url "https://github.com/water-rs/cli/releases/download/v0.3.2/waterui-cli-x86_64-unknown-linux-gnu.tar.xz"
     end
   end
   license any_of: ["Apache-2.0", "MIT"]
