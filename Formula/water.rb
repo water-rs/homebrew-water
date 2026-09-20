@@ -1,21 +1,21 @@
 class Water < Formula
   desc "Cross-platform tooling for WaterUI applications"
   homepage "https://github.com/water-rs/cli"
-  version "0.3.2"
+  version "0.4.0"
   if OS.mac?
     if Hardware::CPU.arm?
-      url "https://github.com/water-rs/cli/releases/download/v0.3.2/waterui-cli-aarch64-apple-darwin.tar.xz"
+      url "https://github.com/water-rs/cli/releases/download/v0.4.0/waterui-cli-aarch64-apple-darwin.tar.xz"
     end
     if Hardware::CPU.intel?
-      url "https://github.com/water-rs/cli/releases/download/v0.3.2/waterui-cli-x86_64-apple-darwin.tar.xz"
+      url "https://github.com/water-rs/cli/releases/download/v0.4.0/waterui-cli-x86_64-apple-darwin.tar.xz"
     end
   end
   if OS.linux?
     if Hardware::CPU.arm?
-      url "https://github.com/water-rs/cli/releases/download/v0.3.2/waterui-cli-aarch64-unknown-linux-gnu.tar.xz"
+      url "https://github.com/water-rs/cli/releases/download/v0.4.0/waterui-cli-aarch64-unknown-linux-gnu.tar.xz"
     end
     if Hardware::CPU.intel?
-      url "https://github.com/water-rs/cli/releases/download/v0.3.2/waterui-cli-x86_64-unknown-linux-gnu.tar.xz"
+      url "https://github.com/water-rs/cli/releases/download/v0.4.0/waterui-cli-x86_64-unknown-linux-gnu.tar.xz"
     end
   end
   license any_of: ["Apache-2.0", "MIT"]
@@ -67,5 +67,6 @@ class Water < Formula
     # Install any leftover files in pkgshare; these are probably config or
     # sample files.
     pkgshare.install(*leftover_contents) unless leftover_contents.empty?
+    generate_completions_from_executable(bin/"water", "completions")
   end
 end
