@@ -1,6 +1,6 @@
 name: Publish formula update
 
-# `dev` accepts changes only through a pull request, and the release job in
+# `main` accepts changes only through a pull request, and the release job in
 # water-rs/waterui cannot open one: its token may write contents here but not
 # pull requests, and the GitHub API answers `Resource not accessible by
 # personal access token`. So that job pushes a `water-<version>` branch
@@ -10,8 +10,8 @@ name: Publish formula update
 #
 # It merges its own pull request because the formula is generated: there is
 # nothing in it for a person to read. The rule that asks for a pull request is
-# still honoured, and the squash commit GitHub writes onto `dev` carries the
-# verified signature `dev` also requires.
+# still honoured, and the squash commit GitHub writes onto `main` carries the
+# verified signature `main` also requires.
 
 on:
   push:
@@ -43,10 +43,10 @@ jobs:
 
           # A re-run of the release pushes the same branch again, so the pull
           # request may already be open from the first push.
-          url="$(gh pr list --head "$BRANCH" --base dev --state open --json url --jq '.[0].url // ""')"
+          url="$(gh pr list --head "$BRANCH" --base main --state open --json url --jq '.[0].url // ""')"
           if [[ -z "$url" ]]; then
             url="$(gh pr create \
-              --base dev \
+              --base main \
               --head "$BRANCH" \
               --title "water ${version}" \
               --body "The formula \`dist\` generated for \`waterui-cli-v${version}\`.")"
